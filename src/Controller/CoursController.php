@@ -6,6 +6,7 @@ use App\Entity\Cours;
 use App\Form\CoursType;
 use App\Repository\CoursRepository;
 use cebe\markdown\Markdown;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CoursController extends AbstractController
 {
     #[Route('/', name: 'app_cours_index', methods: ['GET'])]
-    public function index(CoursRepository $coursRepository, Markdown $markdown): Response
+    public function index(Request $request, PaginatorInterface $paginator, CoursRepository $coursRepository, Markdown $markdown): Response
     {
         $cours = $coursRepository->findAll();
         $parsedCours = [];
@@ -24,8 +25,13 @@ class CoursController extends AbstractController
             $parseCour ->setDescription($markdown->parse($cour->getDescription()));
             $parsedCours[] = $parseCour;
         }
+        $knpCour = $paginator->paginate(
+            $parsedCours,
+            $request->query->getInt('page', 1),
+            10
+        );
         return $this->render('cours/index.html.twig', [
-            'cours' => $parsedCours
+            'cours' => $knpCour
         ]);
     }
 
