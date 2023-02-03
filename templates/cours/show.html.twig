@@ -21,7 +21,11 @@
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{ cour.description }}</td>
+                <td>{{ cour.description|raw }}</td>
+            </tr>
+            <tr>
+                <th>Enseignant</th>
+                <td>{{ cour.enseignant.email }}</td>
             </tr>
         </tbody>
     </table>

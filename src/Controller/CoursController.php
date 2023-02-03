@@ -43,6 +43,8 @@ class CoursController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $cour->setEnseignant($this->getUser());
+            $cour->setCreationDate(new \DateTime());
             $coursRepository->save($cour, true);
 
             return $this->redirectToRoute('app_cours_index', [], Response::HTTP_SEE_OTHER);
@@ -69,6 +71,7 @@ class CoursController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $cour->setUpdateDate(new \DateTime());
             $coursRepository->save($cour, true);
 
             return $this->redirectToRoute('app_cours_index', [], Response::HTTP_SEE_OTHER);

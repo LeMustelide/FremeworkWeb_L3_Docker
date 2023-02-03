@@ -31,6 +31,9 @@ class Cours
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updateDate = null;
 
+    #[ORM\ManyToOne]
+    private ?User $enseignant = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -92,6 +95,18 @@ class Cours
     public function setUpdateDate(?\DateTimeInterface $updateDate): self
     {
         $this->updateDate = $updateDate;
+
+        return $this;
+    }
+
+    public function getEnseignant(): ?User
+    {
+        return $this->enseignant;
+    }
+
+    public function setEnseignant(?User $enseignant): self
+    {
+        $this->enseignant = $enseignant;
 
         return $this;
     }
